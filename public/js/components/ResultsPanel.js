@@ -90,7 +90,10 @@ export function ResultsPanel({ viewKey, getItems, defaults = {}, showCity = fals
   // se reordena mientras el panel de detalle esté abierto (evita saltos).
   let dirty = false;
   let frame = 0;
-  const offTracking = on('tracking', ({ bizId }) => {
+  const offTracking = on('tracking', ({ bizId, source }) => {
+    // Nota escrita desde la propia ficha: ya se ve en su campo; repintar o
+    // reordenar haría perder el foco. Se pondrá al día con el próximo cambio.
+    if (source === 'card-note') return;
     list.refreshCard(bizId);
     if (isDetailOpen()) {
       dirty = true;

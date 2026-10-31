@@ -140,8 +140,9 @@ let warnedOffline = false;
 /**
  * Actualiza el seguimiento de un negocio al instante en la interfaz y lo
  * guarda en el servidor (con `delay` ms de espera para agrupar escritura).
+ * `source` identifica desde dónde se editó (lo usa la lista de resultados).
  */
-export function updateTracking(item, patch, { delay = 0 } = {}) {
+export function updateTracking(item, patch, { delay = 0, source = null } = {}) {
   const prev = state.tracking.get(item.id) || blankRecord(item);
   const at = Date.now();
   const next = { ...prev, ...patch, cityId: item.cityId || prev.cityId, snapshot: snapshotOf(item), updatedAt: at };
@@ -150,7 +151,7 @@ export function updateTracking(item, patch, { delay = 0 } = {}) {
   if (patch.webReview && patch.webReview !== prev.webReview) history.push({ at, kind: 'web', value: patch.webReview });
   next.history = history;
   state.tracking.set(item.id, next);
-  emit('tracking', { bizId: item.id, fields: Object.keys(patch) });
+  emit('tracking', { bizId: item.id, fields: Object.keys(patch), source });
   queueSave(item, patch, delay);
 }
 

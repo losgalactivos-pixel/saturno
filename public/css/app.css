@@ -514,15 +514,21 @@ mark { background: #FBE7A1; color: inherit; border-radius: 3px; padding: 0 1px; 
 }
 .social:hover { background: var(--primary-50); color: var(--primary); }
 .social:active { transform: scale(0.92); }
-.card-note {
-  display: flex; gap: 8px; padding: 9px 11px; border-radius: var(--radius-sm); background: #FBFAFD;
-  border: 1px dashed var(--border-strong); font-size: 13px; color: var(--text-2);
+.card-actions { display: flex; align-items: flex-start; gap: 10px; margin-top: auto; padding-top: 2px; flex-wrap: wrap; }
+/* El botón solo crece si la nota baja a otra línea (ficha estrecha). */
+.btn-call { position: relative; z-index: 1; flex: 1 0 auto; font-variant-numeric: tabular-nums; }
+.btn-call-more { padding: 2px 6px; border-radius: 999px; background: rgba(255, 255, 255, 0.22); font-size: 12px; }
+.card-note-input {
+  position: relative; z-index: 1; flex: 999 1 150px; min-width: 0; min-height: 40px; max-height: 116px;
+  padding: 9px 11px; border: 1px dashed var(--border-strong); border-radius: var(--radius-sm); background: #FBFAFD;
+  font-size: 13.5px; color: var(--text-2); overflow-wrap: anywhere; resize: none; field-sizing: content; overflow-y: auto;
+  transition: border-color var(--fast) var(--ease), background-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
 }
-.card-note .icon { color: var(--primary); margin-top: 2px; }
-.card-note span { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; white-space: pre-line; overflow-wrap: anywhere; }
-.card-actions { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 2px; flex-wrap: wrap; }
-.btn-call { position: relative; z-index: 1; font-variant-numeric: tabular-nums; }
-.card-last { margin-left: auto; font-size: 12px; color: var(--muted); }
+.card-note-input::placeholder { color: #8F889C; }
+.card-note-input:hover { border-color: #BDB3CE; }
+.card-note-input:not(:placeholder-shown) { border-style: solid; background: var(--surface); }
+.card-note-input:focus { outline: none; border-style: solid; border-color: var(--primary); background: var(--surface); box-shadow: 0 0 0 3px var(--primary-ring); }
+.card-last { font-size: 12.5px; color: var(--muted); }
 .card .status-select-wrap, .card-tags .tag, .card a { position: relative; z-index: 1; }
 
 .status-select-wrap { position: relative; display: inline-flex; align-items: center; flex: none; }
@@ -796,6 +802,8 @@ mark { background: #FBE7A1; color: inherit; border-radius: 3px; padding: 0 1px; 
   .status-tabs { margin: 0 -16px; padding: 0 12px; }
   .card { padding: 14px; }
   .card-actions .btn-call { flex: 1; min-height: 46px; font-size: 15px; }
+  /* 16px evita que el iPhone amplíe la página al escribir. */
+  .card-note-input { min-height: 46px; padding: 10px 12px; font-size: 16px; }
   .city-search.is-large .city-search-row { flex-direction: column; }
   .detail { width: 100vw; }
   .detail[open] { animation: sheet-in 260ms var(--ease); }
