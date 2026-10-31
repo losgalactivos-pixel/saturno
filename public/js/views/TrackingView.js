@@ -41,7 +41,7 @@ export function TrackingView() {
       return;
     }
     const cities = state.cities.filter((c) => cityIds.has(c.id));
-    summary = Summary(trackedItems);
+    summary = Summary(trackedItems, { context: () => 'Todas tus ciudades', showCity: true });
     panel = ResultsPanel({
       viewKey: 'tracking',
       getItems: trackedItems,

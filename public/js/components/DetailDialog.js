@@ -18,7 +18,7 @@ const QUICK_LOG = [
 ];
 
 let dialog;
-let current = null; // { item, cleanup: [] }
+let current = null; // { item, cleanup: [], onClose }
 let onClosedCallback = () => {};
 
 export function initDetail({ onClosed }) {
@@ -38,10 +38,14 @@ export function initDetail({ onClosed }) {
     closed?.cleanup.forEach((fn) => fn());
     flushAllSaves();
     dialog.replaceChildren();
-    document.documentElement.classList.remove('has-dialog');
+    // Puede quedar otra ventana abierta debajo (la lista de un recuento).
+    if (!document.querySelector('dialog[open]')) document.documentElement.classList.remove('has-dialog');
     if (closed) {
-      const target = document.querySelector(`[data-id="${closed.item.id}"] .card-open`);
-      (target || document.getElementById('main'))?.focus({ preventScroll: Boolean(target) });
+      if (closed.onClose) closed.onClose();
+      else {
+        const target = document.querySelector(`[data-id="${closed.item.id}"] .card-open`);
+        (target || document.getElementById('main'))?.focus({ preventScroll: Boolean(target) });
+      }
       onClosedCallback(closed.item);
     }
   });
@@ -64,12 +68,13 @@ export function closeDetail() {
   setTimeout(done, 300);
 }
 
-export function openDetail(item, { focusNotes = false } = {}) {
+/** `onClose` (opcional) sustituye a la vuelta normal del foco al cerrar. */
+export function openDetail(item, { focusNotes = false, onClose = null } = {}) {
   if (dialog.open) {
     current?.cleanup.forEach((fn) => fn());
     flushAllSaves();
   }
-  current = { item, cleanup: [] };
+  current = { item, cleanup: [], onClose };
   dialog.classList.remove('is-closing');
   dialog.replaceChildren(renderDetail(item, current.cleanup));
   if (!dialog.open) dialog.showModal();
@@ -80,10 +85,10 @@ export function openDetail(item, { focusNotes = false } = {}) {
 }
 
 /** Llamada desde una ficha: registra el intento y abre las notas. */
-export function startCall(item, phone) {
+export function startCall(item, phone, options = {}) {
   logCall(item, phone.tel);
   // Dejamos que el navegador abra el enlace tel: antes de mostrar el panel.
-  setTimeout(() => openDetail(item, { focusNotes: true }), 250);
+  setTimeout(() => openDetail(item, { ...options, focusNotes: true }), 250);
 }
 
 function mapsLinks(item, cityName) {

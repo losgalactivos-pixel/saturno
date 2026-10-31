@@ -5,30 +5,43 @@ import { cityById, on, state } from '../store.js';
 import { summarize } from '../filters.js';
 import { ResultsPanel } from '../components/ResultsPanel.js';
 import { EmptyState, ErrorState, LoadingState } from '../components/States.js';
+import { openStatusList } from '../components/StatusListDialog.js';
 
-function stat(label, value, status) {
-  return h('div', { class: ['stat', status && `is-${status}`] },
-    h('span', { class: 'stat-value' }, value.toLocaleString('es')),
-    h('span', { class: 'stat-label' }, status && h('span', { class: 'status-dot', 'aria-hidden': 'true' }), label));
-}
-
-/** Barra de progreso y recuentos. `getItems` se vuelve a leer en cada render. */
-export function Summary(getItems) {
+/**
+ * Barra de progreso y recuentos. Cada recuento abre la lista de sus negocios.
+ * @param getItems  se vuelve a leer en cada render
+ * @param options   { context: () => texto (p. ej. la ciudad), showCity }
+ */
+export function Summary(getItems, { context = () => '', showCity = false } = {}) {
   const el = h('div', { class: 'summary' });
+  // El resumen se vuelve a pintar al cambiar datos: el foco vuelve al botón por su clave.
+  const open = (kind) => openStatusList(kind, getItems, {
+    context: context(), showCity, returnFocus: () => el.querySelector(`[data-kind="${kind}"]`),
+  });
+  const stat = (kind, label, value, status) => h('button', {
+    type: 'button', class: ['stat', status && `is-${status}`], disabled: !value, dataset: { kind },
+    'aria-haspopup': 'dialog', title: value ? `Ver la lista: ${label.toLowerCase()}` : 'Todavía no hay ninguno',
+    'aria-label': `${label}: ${value}. Ver la lista`, onClick: () => open(kind),
+  },
+    h('span', { class: 'stat-value' }, value.toLocaleString('es'), icon('chevronRight', { size: 16, className: 'stat-chevron' })),
+    h('span', { class: 'stat-label' }, status && h('span', { class: 'status-dot', 'aria-hidden': 'true' }), label));
+
   const render = () => {
     const s = summarize(getItems());
     const pct = s.total ? Math.round((s.contacted / s.total) * 100) : 0;
     el.replaceChildren(
-      h('div', { class: 'progress-card' },
-        h('div', { class: 'progress-text' }, h('strong', {}, `${s.contacted.toLocaleString('es')} de ${s.total.toLocaleString('es')}`), ' contactados', h('span', { class: 'muted' }, ` · ${pct} %`)),
-        h('div', {
-          class: 'progress', role: 'progressbar', 'aria-label': 'Negocios contactados',
-          'aria-valuemin': '0', 'aria-valuemax': String(s.total), 'aria-valuenow': String(s.contacted),
-        }, h('span', { style: { width: `${pct}%` } }))),
-      stat('Interesados', s.interesado, 'interesado'),
-      stat('Volver a llamar', s.volver_a_llamar, 'volver_a_llamar'),
-      stat('Con nota', s.withNotes),
-      stat('Sin web confirmada', s.verified),
+      h('button', {
+        type: 'button', class: 'progress-card', disabled: !s.contacted, 'aria-haspopup': 'dialog', dataset: { kind: 'contacted' },
+        title: s.contacted ? 'Ver la lista de contactados' : 'Todavía no has contactado con ninguno',
+        'aria-label': `${s.contacted} de ${s.total} contactados (${pct} %). Ver la lista`, onClick: () => open('contacted'),
+      },
+        h('span', { class: 'progress-text' }, h('strong', {}, `${s.contacted.toLocaleString('es')} de ${s.total.toLocaleString('es')}`), ' contactados',
+          h('span', { class: 'muted' }, ` · ${pct} %`), icon('chevronRight', { size: 16, className: 'stat-chevron' })),
+        h('span', { class: 'progress', 'aria-hidden': 'true' }, h('span', { style: { width: `${pct}%` } }))),
+      stat('interesado', 'Interesados', s.interesado, 'interesado'),
+      stat('volver_a_llamar', 'Volver a llamar', s.volver_a_llamar, 'volver_a_llamar'),
+      stat('withNotes', 'Con nota', s.withNotes),
+      stat('verified', 'Sin web confirmada', s.verified),
     );
   };
   render();
@@ -139,7 +152,7 @@ export function CityView(cityId, actions) {
     }
 
     const getItems = () => state.cityData.get(cityId)?.data?.items || [];
-    summary = Summary(getItems);
+    summary = Summary(getItems, { context: () => cityById(cityId)?.name || '' });
     panel = ResultsPanel({ viewKey: 'city', getItems });
     body.replaceChildren(summary, WebNotice(data.stats) || '', panel.el);
   }
