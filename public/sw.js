@@ -1,9 +1,9 @@
 // Service worker mínimo: permite instalar la app y abrir la interfaz sin red.
 // Estrategia "red primero" para que siempre se vea la última versión.
 // No intercepta la API local ni las peticiones a OpenStreetMap.
-const CACHE = 'saturno-shell-v2';
+const CACHE = 'saturno-shell-v3';
 const SHELL = [
-  './', 'index.html', 'css/app.css', 'manifest.webmanifest',
+  './', 'index.html', 'css/app.css', 'js/splash.js', 'manifest.webmanifest',
   'icons/saturno.svg', 'icons/icon-192.png', 'favicon.ico',
 ];
 
