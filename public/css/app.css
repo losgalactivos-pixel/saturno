@@ -736,7 +736,6 @@ mark { background: #FBE7A1; color: inherit; border-radius: 3px; padding: 0 1px; 
   cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
   animation: splash-out 560ms var(--ease) 2350ms forwards;
 }
-.no-splash .splash { display: none; }
 .splash.is-leaving { animation: fade-out 320ms var(--ease) forwards; }
 .splash-stage { position: relative; display: grid; justify-items: center; animation: splash-stage-out 560ms var(--ease) 2350ms forwards; }
 .splash-stage::before {
@@ -887,6 +886,5 @@ mark { background: #FBE7A1; color: inherit; border-radius: 3px; padding: 0 1px; 
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .splash { display: none; }
   *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
 }
