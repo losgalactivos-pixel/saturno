@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Saturno">
+  <defs>
+    <radialGradient id="saturno-shine" cx="0.32" cy="0.26" r="0.75">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.34"/>
+      <stop offset="0.6" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <mask id="saturno-gap" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+      <rect width="64" height="64" fill="#fff"/>
+      <path d="M5 32a27 8.5 0 0 0 54 0" transform="rotate(-24 32 32)" fill="none" stroke="#000" stroke-width="10" stroke-linecap="round"/>
+    </mask>
+  </defs>
+  <path d="M5 32a27 8.5 0 0 1 54 0" transform="rotate(-24 32 32)" fill="none" stroke="#790DD6" stroke-width="4.6" stroke-linecap="round"/>
+  <g mask="url(#saturno-gap)">
+    <circle cx="32" cy="32" r="16.5" fill="#790DD6"/>
+    <circle cx="32" cy="32" r="16.5" fill="url(#saturno-shine)"/>
+  </g>
+  <path d="M5 32a27 8.5 0 0 0 54 0" transform="rotate(-24 32 32)" fill="none" stroke="#790DD6" stroke-width="4.6" stroke-linecap="round"/>
+</svg>

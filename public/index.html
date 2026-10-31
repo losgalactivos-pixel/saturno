@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; frame-src https://www.openstreetmap.org; connect-src 'self' https://nominatim.openstreetmap.org https://overpass-api.de https://overpass.private.coffee https://overpass.kumi.systems; base-uri 'none'; form-action 'self'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Saturno · Negocios sin web</title>
+  <meta name="description" content="Encuentra negocios locales con teléfono y sin página web en OpenStreetMap, y organiza tus llamadas comerciales.">
+  <meta name="theme-color" content="#790DD6">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" href="icons/saturno.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="css/app.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <header class="topbar">
+    <button class="icon-btn" type="button" id="menu-btn" aria-label="Abrir ciudades" aria-controls="sidebar" aria-expanded="false"></button>
+    <a class="brand brand-compact" href="#/">
+      <img src="icons/saturno.svg" alt="" width="28" height="28">
+      <span>Saturno</span>
+    </a>
+    <a class="icon-btn" href="#/seguimiento" id="topbar-tracking" aria-label="Seguimiento"></a>
+  </header>
+
+  <aside id="sidebar" class="sidebar" aria-label="Navegación y ciudades"></aside>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <main id="main" class="main" tabindex="-1">
+    <div class="boot" aria-live="polite">
+      <img src="icons/saturno.svg" alt="" width="56" height="56" class="boot-logo">
+      <p>Cargando Saturno…</p>
+    </div>
+  </main>
+
+  <dialog id="detail" class="detail" aria-labelledby="detail-title"></dialog>
+  <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+
+  <noscript>
+    <p class="noscript">Saturno necesita JavaScript activado para funcionar.</p>
+  </noscript>
+</body>
+</html>

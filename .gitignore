@@ -1,0 +1,7 @@
+# Datos locales (notas, estados, caché de OSM)
+data/
+.env
+__pycache__/
+*.pyc
+# Configuración local de Claude Code
+.claude/

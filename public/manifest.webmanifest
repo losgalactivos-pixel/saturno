@@ -1,0 +1,21 @@
+{
+  "name": "Saturno · Negocios sin web",
+  "short_name": "Saturno",
+  "description": "Encuentra negocios locales con teléfono y sin página web, y organiza tus llamadas comerciales.",
+  "lang": "es",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F8F7FB",
+  "theme_color": "#790DD6",
+  "icons": [
+    { "src": "icons/saturno.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Seguimiento", "url": "./#/seguimiento", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
